@@ -1,0 +1,126 @@
+<!DOCTYPE html> 
+<html>  
+<head>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  <style type="text/css">
+    html { height: 100% }
+    body { height: 100%; margin: 0px; padding: 0px }
+    #map_canvas { height: 100% }
+  </style>
+  <title>GPS</title>
+  <script src="http://www.google.com/jsapi"></script>
+  <script type="text/javascript"
+    src="http://maps.google.com/maps/api/js?sensor=true">
+  </script>
+  
+  <script>
+    google.load("jquery", "1.4.1");
+  </script>
+
+<script type="text/javascript">
+  function initializeMap(p_latitude, p_longitude) {
+    alert(p_latitude + " " + p_longitude);
+    var latlng = new google.maps.LatLng(p_latitude, p_longitude);
+    var myOptions = {
+      zoom: 15,
+      center: latlng,
+      mapTypeId: google.maps.MapTypeId.SATELLITE
+    };
+    var map = new google.maps.Map(document.getElementById("map_canvas"),
+        myOptions);
+  }
+
+function loadPosition() {
+  navigator.geolocation.getCurrentPosition(
+      function(pos) {
+        $("#lat_field").val(pos.coords.latitude);
+        $("#long_field").val(pos.coords.longitude);
+        $("#accuracy_field").val(pos.coords.accuracy);
+        $("#altitude_field").val(pos.coords.altitude);
+        $("#heading_field").val(pos.coords.heading);
+        $("#speed_field").val(pos.coords.speed);
+        $("#timestamp_field").val(pos.coords.timestamp);
+        initializeMap(pos.coords.latitude, pos.coords.longitude)
+      }
+    )
+};
+
+</script>
+
+</head>
+<body onload="loadPosition()">
+  <div id="map_canvas" style="width:100%; height:80%"></div>
+  <br />
+  <br />
+  <form action="upload.html" method="get">
+  <div>
+    <table>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Data</th>
+        <th>Notes</th>
+      </tr>
+      <tr>
+        <td>coords.latitude</td>
+        <td>double</td>
+        <td><input type="text" id="lat_field" name="latitude" /></td>
+        <td>decimal degrees</td>
+      </tr>
+      <tr>
+        <td>coords.longitude</td>
+        <td>double</td>
+        <td><input type="text" id="long_field" name="longitude" /></td>
+        <td>decimal degrees</td>
+      </tr>
+      <tr>
+        <td>coords.accuracy</td>
+        <td>double</td>
+        <td><input type="text" id="accuracy_field" name="accuracy" /></td>
+        <td>meters</td>
+      </tr>
+      <tr>
+        <td>coords.altitude</td>
+        <td>double or null</td>
+        <td><input type="text" id="altitude_field" name="altitude" /></td>
+        <td>meters above the reference ellipsoid</td>
+      </tr>
+      <tr>
+        <td>coords.heading</td>
+        <td>double or null</td>
+        <td><input type="text" id="heading_field" name="heading" /></td>        
+        <td>degrees clockwise from true north</td>
+      </tr>
+      <tr>
+        <td>coords.speed</td>
+        <td>double or null</td>
+        <td><input type="text" id="speed_field" name="speed" /></td>
+        <td>meters/second</td>
+      </tr>
+      <tr>
+        <td>coords.timestamp</td>
+        <td>DOMTimeStamp</td>
+        <td><input type="text" id="timestamp_field" name="timestamp" /></td>
+        <td>like a Date() object</td>
+      </tr>    
+    </table>
+  </div>
+    <div>
+      <input type="submit" value="Upload Score" />
+    </div>      
+  </form>
+
+http://code.google.com/apis/maps/documentation/javascript/basics.html
+http://diveintohtml5.org/geolocation.html
+
+<!--
+<maps:Map xmlns:maps="com.google.maps.*" id="map" mapevent_mapready="onMapReady(event)" width="100%" height="100%"
+    key="ABQIAAAAkSBdIq65LRw4rchywNgb_hTX6FWJr-grWMDeE4Q5KRj5muivkBQMwC_WicfLwT96ZTn5dkvnjCCKyg"/>
+
+	http://maps.google.com/maps/geo?q=1600+Amphitheatre+Parkway,+Mountain+View,+CA&output=json&oe=utf8\
+&sensor=true_or_false&key=ABQIAAAAkSBdIq65LRw4rchywNgb_hTX6FWJr-grWMDeE4Q5KRj5muivkBQMwC_WicfLwT96ZTn5dkvnjCCKyg
+
+-->
+
+</body>
+</html>
